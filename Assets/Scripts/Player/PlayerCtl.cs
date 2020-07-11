@@ -79,9 +79,6 @@ public class PlayerCtl : MonoBehaviour
         {
             Vector3 v3Force = accel * front.transform.forward;
             _rb.AddForce(v3Force);
-            //_rb.AddForce(front.transform.position * accel);
-            //_rb.AddForceAtPosition(front.transform.position * accel, front.transform.position);
-            //transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
             isAcceleration = true;
             isMovingFowd = true;
         }
@@ -89,8 +86,6 @@ public class PlayerCtl : MonoBehaviour
         {
             Vector3 v3Force = -accel * front.transform.forward;
             _rb.AddForce(v3Force);
-            //_rb.AddForce(front.transform.position * -accel);
-            //transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
             isAcceleration = true;
             isMovingFowd = false;
         }
