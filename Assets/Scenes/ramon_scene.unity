@@ -371,9 +371,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
         type: 3}
+      propertyPath: power_stats.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
       propertyPath: thisCamera
       value: 
       objectReference: {fileID: 1279385232}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: accel
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: power_stats.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: power_stats.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: power_stats.Array.data[2]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: power_stats.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512014491349367397, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
+        type: 3}
+      propertyPath: maxFlightDistance
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 512014491349367398, guid: 512ecec4e4fb5c74fadfdb59524e29fa,
         type: 3}
       propertyPath: m_Constraints
