@@ -14,6 +14,8 @@ public class PlayerCtl : MonoBehaviour
 
     public float steerAngle = 0.0f;
 
+    private bool ableToJump = false;
+
     bool isAcceleration = false;
     Rigidbody _rb;
 
@@ -62,7 +64,19 @@ public class PlayerCtl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //_rb.AddForce(Vector3.up * jumpSpeed, )
+            _rb.AddForce(Vector3.up * jumpSpeed);
+        }
+    }
+
+    private void OnCollisionStay(Collider collision)
+    {
+        if(collision.tag == "gorund")
+        {
+            ableToJump = true;
+        }
+        else
+        {
+            ableToJump = false;
         }
     }
 }
