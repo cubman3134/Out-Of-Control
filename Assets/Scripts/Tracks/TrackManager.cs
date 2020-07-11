@@ -22,15 +22,80 @@ using GameObject = UnityEngine.GameObject;
 /// </summary>
 public class TrackManager : MonoBehaviour
 {
+    GameObject player;
+
+    GameObject walls;
+    GameObject leftWall;
+    GameObject rightWall;
+    GameObject ground;
+
+    GameObject obstacles;
+    GameObject leftObstacle;
+    GameObject middleObstacle;
+    GameObject rightObstacle;
 
     Vector3 m_CameraOriginalPos = Vector3.zero;
     protected int m_Score;
     protected float m_ScoreAccum;
     protected bool m_Rerun;     // This lets us know if we are entering a game over (ads) state or starting a new game (see GameState)
 
-
-    protected void Awake()
+    private void Start()
     {
+        scoreCounted = false;
+        if (gameObject.transform.GetChild(0).gameObject.name == "Walls")
+        {
+            walls = gameObject.transform.GetChild(0).gameObject;
+            obstacles = gameObject.transform.GetChild(1).gameObject;
+        } else
+        {
+            walls = gameObject.transform.GetChild(1).gameObject;
+            obstacles = gameObject.transform.GetChild(0).gameObject;
+        }
+        for(int i = 0; i < walls.transform.childCount; i++)
+        {
+            if(walls.transform.GetChild(i).gameObject.name == "Right")
+            {
+                rightWall = walls.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (walls.transform.GetChild(i).gameObject.name == "Ground")
+            {
+                ground = walls.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (walls.transform.GetChild(i).gameObject.name == "Left")
+            {
+                leftWall = walls.transform.GetChild(i).gameObject;
+                continue;
+            }
+        }
+        for(int i = 0; i < obstacles.transform.childCount; i++)
+        {
+            if (obstacles.transform.GetChild(i).gameObject.name == "Left")
+            {
+                leftObstacle = obstacles.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (obstacles.transform.GetChild(i).gameObject.name == "Mid")
+            {
+                middleObstacle = obstacles.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (obstacles.transform.GetChild(i).gameObject.name == "Right")
+            {
+                rightObstacle = obstacles.transform.GetChild(i).gameObject;
+                continue;
+            }
+        }
+
+    }
+
+    bool scoreCounted;
+
+    private void Update()
+    {
+        //if distance between player and this area is too great, delete this game object
+
         
     }
 }
