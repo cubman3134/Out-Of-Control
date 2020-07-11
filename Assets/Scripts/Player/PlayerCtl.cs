@@ -9,20 +9,11 @@ public class PlayerCtl : MonoBehaviour
     public float speed = 0f;
     public float turning_speed = 0f;
 
+    public Transform front;
+
     public float steerAngle = 0.0f;
 
-    float afterFlightSlipperyTiresTime = 0.0f;
-    float brakeSlipperyTiresTime = 0.0f;
-    float handBrakeSlipperyTiresTime = 0.0f;
-    bool isBrake = false;
-    bool isHandBrake = false;
     bool isAcceleration = false;
-    bool isReverseAcceleration = false;
-    float accelerationForceMagnitude = 0.0f;
-    Rigidbody rb = null;
-
-    float smooth = 5.0f;
-    float tiltAngle = 60.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -49,42 +40,30 @@ public class PlayerCtl : MonoBehaviour
 
         if (velocity > 0.4f)
         {
-            transform.Translate(Vector3.forward * speed, 0);
+            //transform.Translate(front.transform.position * speed * Time.deltaTime, 0);
+            transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
             isAcceleration = true;
         }
         else if (velocity < -0.4f)
         {
-            transform.Translate(Vector3.forward * -speed, 0);
+            transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
             isAcceleration = true;
         }
 
         // Make tires more slippery (for 1 seconds) when player hit brakes
-        if (isBrakeNow == true && isBrake == false)
-        {
-            brakeSlipperyTiresTime = 1.0f;
-        }
+        //if (isBrakeNow == true && isBrake == false)
+        //{
+        //    brakeSlipperyTiresTime = 1.0f;
+        //}
 
         if (Mathf.Abs(heading_steer) > 0.001f)
         {
             // Smoothly tilts a transform towards a target rotation.
             float tiltAroundZ = heading_steer * turning_speed;
 
-            // Rotate the cube by converting the angles into a quaternion.
-            Quaternion target = Quaternion.Euler(0, tiltAroundZ, 0);
+            //transform.rotation = new Quaternion(0, tiltAroundZ, 0, 1000);
+            transform.Rotate(0, tiltAroundZ * Time.deltaTime, 0, Space.World);
 
-            // Dampen towards the target rotation
-            transform.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * smooth);
-        }
-        else if (Mathf.Abs(heading_steer) < 0.001f)
-        {
-            // Smoothly tilts a transform towards a target rotation.
-            float tiltAroundZ = heading_steer * -turning_speed;
-
-            // Rotate the cube by converting the angles into a quaternion.
-            Quaternion target = Quaternion.Euler(0, tiltAroundZ, 0);
-
-            // Dampen towards the target rotation
-            transform.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * smooth);
         }
     }
 }

@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\PlayerCtl.cs" />
     <Compile Include="Assets\Scripts\Tracks\TrackManager.cs" />
+    <None Include="Assets\Sprite\just make a change.txt" />
     <Reference Include="UnityEngine">
       <HintPath>E:/Program Files/2019.4.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
