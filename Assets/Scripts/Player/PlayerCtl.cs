@@ -8,17 +8,19 @@ public class PlayerCtl : MonoBehaviour
 
     public float speed = 0f;
     public float turning_speed = 0f;
+    public float jumpSpeed = 0f;
 
     public Transform front;
 
     public float steerAngle = 0.0f;
 
     bool isAcceleration = false;
+    Rigidbody _rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -38,23 +40,15 @@ public class PlayerCtl : MonoBehaviour
         bool isBrakeNow = false;
         bool isHandBrakeNow = Input.GetKey(KeyCode.Space);
 
-        if (velocity > 0.4f)
-        {
-            //transform.Translate(front.transform.position * speed * Time.deltaTime, 0);
-            transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
-            isAcceleration = true;
-        }
-        else if (velocity < -0.4f)
+        if (velocity != 0f)
         {
             transform.position = Vector3.MoveTowards(transform.position, front.transform.position, velocity * Time.deltaTime * speed);
             isAcceleration = true;
         }
-
-        // Make tires more slippery (for 1 seconds) when player hit brakes
-        //if (isBrakeNow == true && isBrake == false)
-        //{
-        //    brakeSlipperyTiresTime = 1.0f;
-        //}
+        else
+        {
+            // if there is enough time 
+        }
 
         if (Mathf.Abs(heading_steer) > 0.001f)
         {
@@ -64,6 +58,11 @@ public class PlayerCtl : MonoBehaviour
             //transform.rotation = new Quaternion(0, tiltAroundZ, 0, 1000);
             transform.Rotate(0, tiltAroundZ * Time.deltaTime, 0, Space.World);
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //_rb.AddForce(Vector3.up * jumpSpeed, )
         }
     }
 }
