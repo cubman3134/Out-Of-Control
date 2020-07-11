@@ -23,6 +23,9 @@ using GameObject = UnityEngine.GameObject;
 public class TrackManager : MonoBehaviour
 {
     GameObject player;
+    GameObject scriptHandler;
+    ScoreHandler scoreHandler;
+    GameHandler gameHandler;
 
     GameObject walls;
     GameObject leftWall;
@@ -34,14 +37,66 @@ public class TrackManager : MonoBehaviour
     GameObject middleObstacle;
     GameObject rightObstacle;
 
-    Vector3 m_CameraOriginalPos = Vector3.zero;
-    protected int m_Score;
-    protected float m_ScoreAccum;
-    protected bool m_Rerun;     // This lets us know if we are entering a game over (ads) state or starting a new game (see GameState)
+    List<GameObject> activeObstacles;
+
+    GameObject bounds;
+    GameObject scoreBounds;
 
     private void Start()
     {
+        activeObstacles = new List<GameObject>() { leftObstacle, middleObstacle, rightObstacle };
         scoreCounted = false;
+        player = GameObject.FindGameObjectWithTag("PlayerTag");
+        scriptHandler = GameObject.FindGameObjectWithTag("ScriptHandler");
+        scoreHandler = scriptHandler.GetComponent<ScoreHandler>();
+        gameHandler = scriptHandler.GetComponent<GameHandler>();
+        int currentLevel = gameHandler.HardnessLevel;
+        int numLevels = gameHandler.IncreaseHardnessAtNumObjects.Count;
+        
+        int maxPossibleNumObstacles = 2;
+        int maxNumObstacles = Mathf.CeilToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
+        int minNumObstacles = Mathf.FloorToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
+        int numberOfObstacles = Random.Range(minNumObstacles, maxNumObstacles + 1);
+        int amountToTakeAway = activeObstacles.Count - numberOfObstacles;
+        HashSet<int> usedIndexes = new HashSet<int>();
+        while (usedIndexes.Count != amountToTakeAway)
+        {
+            int randInt = Random.Range(0, activeObstacles.Count);
+            if (usedIndexes.Contains(randInt)) continue;
+            activeObstacles[randInt].SetActive(false);
+        }
+        for (int i = 0; i < activeObstacles.Count; i++)
+        {
+            if (!activeObstacles[i].activeSelf)
+            {
+                activeObstacles.RemoveAt(i);
+                i = i - 1;
+            }
+        }
+
+        for(int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            if(gameObject.transform.GetChild(i).gameObject.name == "Bounds")
+            {
+                bounds = gameObject.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if(gameObject.transform.GetChild(i).gameObject.name == "Walls")
+            {
+                walls = gameObject.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (gameObject.transform.GetChild(i).gameObject.name == "Obstacle")
+            {
+                obstacles = gameObject.transform.GetChild(i).gameObject;
+                continue;
+            }
+            if (gameObject.transform.GetChild(i).gameObject.name == "ScoreBounds")
+            {
+                scoreBounds = gameObject.transform.GetChild(i).gameObject;
+                continue;
+            }
+        }
         if (gameObject.transform.GetChild(0).gameObject.name == "Walls")
         {
             walls = gameObject.transform.GetChild(0).gameObject;
@@ -91,10 +146,33 @@ public class TrackManager : MonoBehaviour
     }
 
     bool scoreCounted;
+    float maxDistance;
 
     private void Update()
     {
         //if distance between player and this area is too great, delete this game object
+        //and only if the scoreCounted is true, that way we know that the player has already been here
+        if(scoreCounted && Vector3.Distance(player.gameObject.transform.position, gameObject.transform.position) > maxDistance)
+        {
+            Destroy(gameObject);
+        }
+        //only check intersections if player is currently within the bounds of this game object
+        if (bounds.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
+        {
+            if (scoreBounds.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
+            {
+                scoreCounted = true;
+
+            }
+            foreach (var curActiveObstacle in activeObstacles)
+            {
+                if (curActiveObstacle.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
+                {
+                    gameHandler.LoseLife();
+                    break;
+                }
+            }
+        }
 
         
     }

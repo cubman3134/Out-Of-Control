@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ScoreHandler.cs" />
+    <Compile Include="Assets\Scripts\Overall\GameHandler.cs" />
+    <Compile Include="Assets\Scripts\Overall\MapHandler.cs" />
+    <Compile Include="Assets\Scripts\Overall\ScoreHandler.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCtl.cs" />
     <Compile Include="Assets\Scripts\Tracks\TrackManager.cs" />
     <None Include="Assets\Sprite\just make a change.txt" />
