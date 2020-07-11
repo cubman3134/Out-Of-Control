@@ -40,6 +40,11 @@ public class MapHandler : MonoBehaviour
         curObject.SetActive(true);
     }
 
+    public void RemoveGameObject(GameObject objectToRemove)
+    {
+        mapSegments.Remove(objectToRemove);
+    }
+
     // Update is called once per frame
     void Update()
     {

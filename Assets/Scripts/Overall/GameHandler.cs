@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     private MapHandler mapHandler;
-    private int _hardnessLevel;
+    private int _hardnessLevel = 0;
     private int numObjectsPassed;
-    private List<int> _increaseHardnessAtNumObjects;
+    private List<int> _increaseHardnessAtNumObjects = new List<int>() { 20, 100, 200, 500, 1000 };
     private int _livesLeft;
     private float _damageThreshold;
     private float _lastDamageTime;
@@ -19,9 +19,7 @@ public class GameHandler : MonoBehaviour
     {
         _damageThreshold = 2.0f;
         mapHandler = GameObject.FindGameObjectWithTag("ScriptHandler").GetComponent<MapHandler>();
-        _increaseHardnessAtNumObjects = new List<int>() { 20, 100, 200, 500, 1000 };
         numObjectsPassed = 0;
-        _hardnessLevel = 0;
         _livesLeft = 5;
     }
 
