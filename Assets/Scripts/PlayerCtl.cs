@@ -14,8 +14,7 @@ public class PlayerCtl : MonoBehaviour
 
     public Transform front;
     public Camera thisCamera;
-
-    private bool ableToJump = false;
+    
     private bool isAcceleration = false;
     private bool isMovingFowd = false;
 
@@ -67,6 +66,7 @@ public class PlayerCtl : MonoBehaviour
     Vector3 offset = new Vector3(0, 0, 0);
     float lastInputTime = 0.0f;
     float timeBetweenInput = 0.2f;
+    float remainingJumpTime = 2f;
 
     private void FixedUpdate()
     {
@@ -221,26 +221,45 @@ public class PlayerCtl : MonoBehaviour
     private void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space) && ableToJump && power_stats[2] > 0f)
+        if (Input.GetKeyDown(KeyCode.Space) && power_stats[2] > 0f)
         {
             _rb.AddForce(Vector3.up * jumpSpeed);
-            ableToJump = false;
         }
 
         if(power_stats[0] > 0f)
         {
             if (transform.position.y < maxFlightDistance)
-                transform.Translate(Vector3.up * Time.deltaTime * speed);
+                transform.Translate(Vector3.up * Time.deltaTime * jumpSpeed);
 
         }
-    }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if(collision.gameObject.tag == "Finish")
+        if(power_stats[3] > 0)
         {
-            //Debug.LogError("Finish touched");
-            ableToJump = true;
+            this.gameObject.tag = "Untagged";
+        }else if(power_stats[3] <= 0)
+        {
+            this.gameObject.tag = "PlayerTag";
+        }
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        /* power up list
+        * 
+        * JP + wing --> 0
+        * coin magnet --> 1
+        * power spring --> 2
+        * invis --> 3
+        */
+        if (collision.gameObject.tag == "Wings")
+        {
+            power_stats[0] = 10;
+        }else if(collision.gameObject.tag == "Spring")
+        {
+            power_stats[2] = 10;
+        }else if(collision.gameObject.tag == "Inv")
+        {
+            power_stats[3] = 10;
         }
     }
 }
