@@ -67,11 +67,9 @@
     <Compile Include="Assets\Scripts\Overall\MapHandler.cs" />
     <Compile Include="Assets\Scripts\Overall\ScoreHandler.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCtl.cs" />
-    <Compile Include="Assets\Scripts\SceneControl\ExitBtn.cs" />
-    <Compile Include="Assets\Scripts\SceneControl\gotoScene.cs" />
-    <Compile Include="Assets\Scripts\SceneControl\tutorialBtn.cs" />
     <Compile Include="Assets\Scripts\Tracks\TrackManager.cs" />
     <None Include="Assets\Sprite\just make a change.txt" />
+    <None Include="Assets\Sprite\TestShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:/2019.4.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

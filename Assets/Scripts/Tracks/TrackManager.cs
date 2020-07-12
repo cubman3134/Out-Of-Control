@@ -127,8 +127,8 @@ public class TrackManager : MonoBehaviour
         int numLevels = gameHandler.IncreaseHardnessAtNumObjects.Count;
 
         int maxPossibleNumObstacles = 2;
-        int maxNumObstacles = Mathf.CeilToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
-        int minNumObstacles = Mathf.FloorToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
+        int maxNumObstacles = Mathf.CeilToInt(maxPossibleNumObstacles * (currentLevel / (float)numLevels));
+        int minNumObstacles = Mathf.FloorToInt(maxPossibleNumObstacles * (currentLevel / (float)numLevels));
         int numberOfObstacles = Random.Range(minNumObstacles, maxNumObstacles + 1);
         int amountToTakeAway = activeObstacles.Count - numberOfObstacles;
         HashSet<int> usedIndexes = new HashSet<int>();

@@ -52,9 +52,59 @@ public class PlayerCtl : MonoBehaviour
         }
     }
 
+
+    enum Lane : int
+    {
+        left = -1,
+        middle = 0,
+        right = 1,
+    }
+
+    Lane currentLane = Lane.middle;
+
+    float laneDistance = 10 / 3.0f;
+
+    Vector3 offset = new Vector3(0, 0, 0);
+    float lastInputTime = 0.0f;
+    float timeBetweenInput = 0.2f;
+
     private void FixedUpdate()
     {
-        UpdateInput();
+        
+        Vector3 forward = new Vector3(0, 0, 1.0f);
+        if(Time.time > timeBetweenInput + lastInputTime)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                if (currentLane == Lane.middle)
+                {
+                    currentLane = Lane.left;
+                    lastInputTime = Time.time;
+                }
+                else if (currentLane == Lane.right)
+                {
+                    currentLane = Lane.middle;
+                    lastInputTime = Time.time;
+                }
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                if (currentLane == Lane.middle)
+                {
+                    currentLane = Lane.right;
+                    lastInputTime = Time.time;
+                }
+                else if (currentLane == Lane.left)
+                {
+                    currentLane = Lane.middle;
+                    lastInputTime = Time.time;
+                }
+            }
+        }
+        
+        speed = 5.0f;
+        this.gameObject.transform.position = new Vector3(0.0f + (((int)currentLane) * laneDistance) ,gameObject.transform.position.y, gameObject.transform.position.z) + forward;
+        /*UpdateInput();
         powerCheck();
 
         if(pillMode == 0)
@@ -64,7 +114,7 @@ public class PlayerCtl : MonoBehaviour
         else
         {
             thisCamera.gameObject.transform.localRotation = Quaternion.Euler(30f, 0, 0);
-        }
+        }*/
     }
 
     // Update is called once per frame
@@ -125,7 +175,7 @@ public class PlayerCtl : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && ableToJump && power_stats[2] > 0f)
+        /*if (Input.GetKeyDown(KeyCode.Space) && ableToJump && power_stats[2] > 0f)
         {
             _rb.AddForce(Vector3.up * jumpSpeed);
             ableToJump = false;
@@ -136,7 +186,7 @@ public class PlayerCtl : MonoBehaviour
             if (transform.position.y < maxFlightDistance)
                 transform.Translate(Vector3.up * Time.deltaTime * speed);
 
-        }
+        }*/
     }
 
     private void OnCollisionStay(Collision collision)
