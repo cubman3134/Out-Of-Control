@@ -6,6 +6,8 @@ public class ScoreHandler : MonoBehaviour
 {
     private int _score;
 
+    public int Score { get { return _score; } }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +19,4 @@ public class ScoreHandler : MonoBehaviour
         _score += amount;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

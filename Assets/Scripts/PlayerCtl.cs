@@ -65,13 +65,14 @@ public List<float> power_stats;
 
     Vector3 offset = new Vector3(0, 0, 0);
     float lastInputTime = 0.0f;
-    float timeBetweenInput = 0.2f;
+    float timeBetweenInput = 0.1f;
     float remainingJumpTime = 2f;
+    public Vector3 forward = new Vector3(0, 0, 1.0f);
 
     private void FixedUpdate()
     {
         
-        Vector3 forward = new Vector3(0, 0, 1.0f);
+        
         if(Time.time > timeBetweenInput + lastInputTime)
         {
             //left left --> pill 1
