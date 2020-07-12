@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+/*
 public class PlayerCtl : MonoBehaviour
 {
     public float speed = 0f;
@@ -22,19 +22,19 @@ public class PlayerCtl : MonoBehaviour
     Rigidbody _rb;
 
     public int pillMode = -1;
-    /*
+
      * Flip Up -> 0
      * LeftLeft -> 1
      * TheRock -> 2 --> think later
      * SleepLess -> 3
-     */
+
     public List<float> power_stats;
-    /*
+
      * JP + wing --> 0
      * coin magnet --> 1
      * power spring --> 2
      * invis --> 3
-     */
+
 
     // Start is called before the first frame update
     void Start()
@@ -114,7 +114,7 @@ public class PlayerCtl : MonoBehaviour
         else
         {
             thisCamera.gameObject.transform.localRotation = Quaternion.Euler(30f, 0, 0);
-        }*/
+        }
     }
 
     // Update is called once per frame
@@ -175,7 +175,7 @@ public class PlayerCtl : MonoBehaviour
 
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Space) && ableToJump && power_stats[2] > 0f)
+        if (Input.GetKeyDown(KeyCode.Space) && ableToJump && power_stats[2] > 0f)
         {
             _rb.AddForce(Vector3.up * jumpSpeed);
             ableToJump = false;
@@ -186,7 +186,7 @@ public class PlayerCtl : MonoBehaviour
             if (transform.position.y < maxFlightDistance)
                 transform.Translate(Vector3.up * Time.deltaTime * speed);
 
-        }*/
+        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -198,3 +198,4 @@ public class PlayerCtl : MonoBehaviour
         }
     }
 }
+*/

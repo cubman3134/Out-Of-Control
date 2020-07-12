@@ -50,7 +50,7 @@ public class MapHandler : MonoBehaviour
     {
         if (destinationAdded) { return; }
 
-        if(mapSegments.Count != maxMapSegments)
+        if(mapSegments.Count < maxMapSegments)
         {
             var prevObject = mapSegments[mapSegments.Count - 1].gameObject;
             mapSegments.Add(Instantiate(generalMapSegment, new Vector3(prevObject.transform.position.x, prevObject.transform.position.y, prevObject.transform.position.z + 20), prevObject.transform.rotation));
