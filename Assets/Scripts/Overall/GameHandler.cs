@@ -19,9 +19,17 @@ public class GameHandler : MonoBehaviour
     public int LivesLeft { get { return _livesLeft; } }
     public List<int> IncreaseHardnessAtNumObjects { get { return _increaseHardnessAtNumObjects; } }
 
+    public List<AudioClip> carBehaviour;
+    //0 --> normal
+    //1 --> crash
+
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
+        //find the player
+        player = GameObject.FindGameObjectWithTag("PlayerTag");
+
         _damageThreshold = 2.0f;
         uiHandler = GameObject.FindGameObjectWithTag("CanvasTag").GetComponent<UIHandler>();
         mapHandler = GameObject.FindGameObjectWithTag("ScriptHandler").GetComponent<MapHandler>();
@@ -36,16 +44,28 @@ public class GameHandler : MonoBehaviour
         {
             _lastDamageTime = Time.time;
             _livesLeft -= 1;
-            if(_livesLeft == 0)
+
+            //change the sound
+            player.GetComponent<AudioSource>().clip = carBehaviour[1];
+            player.GetComponent<AudioSource>().Play();
+
+            Invoke("workingcar", 0.5f);
+
+            if (_livesLeft == 0)
             {
                 GameOver();
             }
         }
     }
 
+    void workingcar()
+    {
+        player.GetComponent<AudioSource>().clip = carBehaviour[0];
+        player.GetComponent<AudioSource>().Play();
+    }
+
     public void GameOver()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("PlayerTag");
         player.GetComponent<PlayerCtl>().forward = new Vector3(0, 0, 0);
         uiHandler.SetGameOverObjectActive();
 
