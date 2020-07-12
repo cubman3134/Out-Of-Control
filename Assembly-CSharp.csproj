@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Overall\ScoreHandler.cs" />
     <Compile Include="Assets\Scripts\PlayerCtl.cs" />
     <Compile Include="Assets\Scripts\SceneControl\ExitBtn.cs" />
+    <Compile Include="Assets\Scripts\SceneControl\GameOver.cs" />
     <Compile Include="Assets\Scripts\SceneControl\gotoScene.cs" />
     <Compile Include="Assets\Scripts\SceneControl\tutorialBtn.cs" />
     <None Include="Assets\Sprite\just make a change.txt" />

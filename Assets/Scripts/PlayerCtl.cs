@@ -27,7 +27,7 @@ public class PlayerCtl : MonoBehaviour
      * TheRock -> 2 --> think later
      * SleepLess -> 3
      */
-    public List<float> power_stats;
+public List<float> power_stats;
     /*
      * JP + wing --> 0
      * coin magnet --> 1
