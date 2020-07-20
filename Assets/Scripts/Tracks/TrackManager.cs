@@ -26,6 +26,7 @@ public class TrackManager : MonoBehaviour
     GameObject scriptHandler;
     ScoreHandler scoreHandler;
     GameHandler gameHandler;
+    MapHandler mapHandler;
 
     GameObject walls;
     GameObject leftWall;
@@ -42,38 +43,8 @@ public class TrackManager : MonoBehaviour
     GameObject bounds;
     GameObject scoreBounds;
 
-    private void Start()
+    void Start()
     {
-        activeObstacles = new List<GameObject>() { leftObstacle, middleObstacle, rightObstacle };
-        scoreCounted = false;
-        player = GameObject.FindGameObjectWithTag("PlayerTag");
-        scriptHandler = GameObject.FindGameObjectWithTag("ScriptHandler");
-        scoreHandler = scriptHandler.GetComponent<ScoreHandler>();
-        gameHandler = scriptHandler.GetComponent<GameHandler>();
-        int currentLevel = gameHandler.HardnessLevel;
-        int numLevels = gameHandler.IncreaseHardnessAtNumObjects.Count;
-        
-        int maxPossibleNumObstacles = 2;
-        int maxNumObstacles = Mathf.CeilToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
-        int minNumObstacles = Mathf.FloorToInt(maxPossibleNumObstacles * (currentLevel / numLevels));
-        int numberOfObstacles = Random.Range(minNumObstacles, maxNumObstacles + 1);
-        int amountToTakeAway = activeObstacles.Count - numberOfObstacles;
-        HashSet<int> usedIndexes = new HashSet<int>();
-        while (usedIndexes.Count != amountToTakeAway)
-        {
-            int randInt = Random.Range(0, activeObstacles.Count);
-            if (usedIndexes.Contains(randInt)) continue;
-            activeObstacles[randInt].SetActive(false);
-        }
-        for (int i = 0; i < activeObstacles.Count; i++)
-        {
-            if (!activeObstacles[i].activeSelf)
-            {
-                activeObstacles.RemoveAt(i);
-                i = i - 1;
-            }
-        }
-
         for(int i = 0; i < gameObject.transform.childCount; i++)
         {
             if(gameObject.transform.GetChild(i).gameObject.name == "Bounds")
@@ -124,7 +95,18 @@ public class TrackManager : MonoBehaviour
                 continue;
             }
         }
-        for(int i = 0; i < obstacles.transform.childCount; i++)
+        scoreCounted = false;
+        player = GameObject.FindGameObjectWithTag("PlayerTag");
+        scriptHandler = GameObject.FindGameObjectWithTag("ScriptHandler");
+        scoreHandler = scriptHandler.GetComponent<ScoreHandler>();
+        gameHandler = scriptHandler.GetComponent<GameHandler>();
+        mapHandler = scriptHandler.GetComponent<MapHandler>();
+        if (gameObject.name.Contains("GasStation"))
+        {
+            activeObstacles = new List<GameObject>() { };
+            return;
+        }
+        for (int i = 0; i < obstacles.transform.childCount; i++)
         {
             if (obstacles.transform.GetChild(i).gameObject.name == "Left")
             {
@@ -142,11 +124,45 @@ public class TrackManager : MonoBehaviour
                 continue;
             }
         }
+        
+        activeObstacles = new List<GameObject>() { leftObstacle, middleObstacle, rightObstacle };
+        
+        int currentLevel = gameHandler.HardnessLevel;
+        int numLevels = gameHandler.IncreaseHardnessAtNumObjects.Count;
+
+        int maxPossibleNumObstacles = 2;
+        int maxNumObstacles = Mathf.CeilToInt(maxPossibleNumObstacles * (currentLevel / (float)numLevels));
+        int minNumObstacles = Mathf.FloorToInt(maxPossibleNumObstacles * (currentLevel / (float)numLevels));
+        int numberOfObstacles = Random.Range(minNumObstacles, maxNumObstacles + 1);
+        int amountToTakeAway = activeObstacles.Count - numberOfObstacles;
+        HashSet<int> usedIndexes = new HashSet<int>();
+        while (usedIndexes.Count != amountToTakeAway)
+        {
+            int randInt = Random.Range(0, activeObstacles.Count);
+            if (usedIndexes.Contains(randInt)) continue;
+            activeObstacles[randInt].SetActive(false);
+            usedIndexes.Add(randInt);
+        }
+        for (int i = 0; i < activeObstacles.Count; i++)
+        {
+            if (!activeObstacles[i].activeSelf)
+            {
+                activeObstacles.RemoveAt(i);
+                i = i - 1;
+            }
+            else
+            {
+                GameObject carSprite = activeObstacles[i].transform.GetChild(0).gameObject;
+                carSprite.GetComponent<SpriteRenderer>().material = Instantiate(gameHandler.carMaterial as Material);
+                Color c = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 1);
+                carSprite.GetComponent<SpriteRenderer>().material.SetColor("_Color", c);
+            }
+        }
 
     }
 
     bool scoreCounted;
-    float maxDistance;
+    public float maxDistance;
 
     private void Update()
     {
@@ -154,13 +170,20 @@ public class TrackManager : MonoBehaviour
         //and only if the scoreCounted is true, that way we know that the player has already been here
         if(scoreCounted && Vector3.Distance(player.gameObject.transform.position, gameObject.transform.position) > maxDistance)
         {
+            mapHandler.RemoveGameObject(gameObject);
             Destroy(gameObject);
         }
         //only check intersections if player is currently within the bounds of this game object
         if (bounds.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
         {
-            if (scoreBounds.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
+            if (scoreCounted == false && scoreBounds.GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<BoxCollider>().bounds))
             {
+                if (gameObject.name.Contains("GasStation"))
+                {
+                    player.GetComponent<PlayerCtl>().pillMode += 1;
+                }
+                scoreHandler.addScore(10);
+                gameHandler.PassObject();
                 scoreCounted = true;
 
             }
